@@ -14,7 +14,10 @@
   <body class="dark">
     <!-- NAVBAR -->
     <nav class="navbar">
-      <h2 class="logo">Prime Axivon DevSuite</h2>
+      <div class="logo">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">Prime Axivon DevSuite</span>
+      </div>
       <ul class="nav-links">
         <li><a href="#" data-page="home">Home</a></li>
         <li><a href="#" data-page="dashboard">Dashboard</a></li>
@@ -22,30 +25,90 @@
         <li><a href="#" data-page="contact">Contact</a></li>
       </ul>
       <button class="menu-toggle" id="menuToggle">☰</button>
+
+      <div class="theme-switch" id="themeToggle">
+        <span class="icon sun">☀️</span>
+        <span class="icon moon">🌙</span>
+        <div class="switch-circle"></div>
+      </div>
     </nav>
 
     <!-- HOME -->
     <section id="home" class="page active">
-      <h1>Prime Axivon DevSuite</h1>
-      <h2>Track your progress...</h2>
-      <p>Your all-in-one developer productivity platform</p>
+      <section class="hero">
+        <div class="hero-content">
+          <h1>Build Smarter. <span>Learn Faster.</span></h1>
 
-      <div class="hero">
-        <h2>Track your progress. Learn smarter.</h2>
-      </div>
+          <p>
+            Manage your tasks, track progress, and grow as a developer — all in
+            one place.
+          </p>
+
+          <div class="hero-buttons">
+            <button class="primary-btn" id="startLearningBtn">
+              Start Learning
+            </button>
+            <button class="secondary-btn" id="goDashboardBtn">
+              Go to Dashboard
+            </button>
+          </div>
+        </div>
+      </section>
 
       <div class="services">
-        <p>Learning Resources</p>
-        <p>Task Management</p>
-        <p>Developer Tools</p>
+        <div class="service-card">
+          <h3>📋 Task Management</h3>
+          <p>Organize your tasks and boost productivity.</p>
+        </div>
+
+        <div class="service-card">
+          <h3>📚 Learning Platform</h3>
+          <p>Explore courses and improve your skills.</p>
+        </div>
+
+        <div class="service-card">
+          <h3>⚡ Developer Tools</h3>
+          <p>Use powerful APIs and tools to grow faster.</p>
+        </div>
       </div>
 
-      <div class="widget">
-        <p>API Widget (Coming Soon)</p>
+      <div class="widgets-container">
+        <!-- Developer Widget -->
+        <div class="widget-card">
+          <div class="api-widget">
+            <h3>👨‍💻 Meet a Developer</h3>
+
+            <div class="user-card" id="userCard">
+              <img id="userImg" src="images/userImg.jpeg" alt="user" />
+              <h4 id="userName">Click below</h4>
+              <p id="userLocation"></p>
+              <p id="userEmail"></p>
+            </div>
+
+            <button id="loadUserBtn" class="primary-btn">Load Developer</button>
+          </div>
+        </div>
+
+        <!-- Weather Widget -->
+        <div class="widget-card">
+          <div class="weather-widget">
+            <h3>🌤️ Weather</h3>
+
+            <input type="text" id="cityInput" placeholder="Enter city..." />
+            <button id="getWeatherBtn">Check</button>
+
+            <div class="weather-result" id="weatherResult">
+              <p id="weatherCity"></p>
+              <p id="weatherTemp"></p>
+              <p id="weatherDesc"></p>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="cta">
-        <button class="btn-primary">Start Learning →</button>
+      <div class="cta-section">
+        <h2>Ready to improve your workflow?</h2>
+        <button class="primary-btn" id="ctaStart">Get Started</button>
       </div>
     </section>
 
@@ -65,7 +128,7 @@
         <div class="task-input">
           <input id="taskInput" type="text" placeholder="Add a task..." />
 
-          <button id="addTaskBtn">Add</button>
+          <button id="addTaskBtn" class="primary-btn">Add</button>
         </div>
         <!-- TASK ANALYTICS -->
         <div class="stats">
@@ -94,9 +157,9 @@
         </div>
 
         <div class="filters">
-          <button id="filterAll">All</button>
-          <button id="filterCompleted">Completed</button>
-          <button id="filterActive">Active</button>
+          <button id="filterAll" class="primary-btn">All</button>
+          <button id="filterCompleted" class="primary-btn">Completed</button>
+          <button id="filterActive" class="primary-btn">Active</button>
         </div>
         <div class="filter-info" id="filterInfo">Showing all tasks</div>
       </div>
@@ -106,54 +169,26 @@
     <section id="learning" class="page learning">
       <h1>Learning</h1>
 
-      <input type="text" placeholder="Search courses..." />
+      <div class="learning-controls">
+        <input type="text" id="searchInput" placeholder="Search courses..." />
 
-      <div class="cards">
-        <div class="card">
-          <h3>JavaScript</h3>
-          <p>Learn the basics</p>
-        </div>
-
-        <div class="card">
-          <h3>JavaScript</h3>
-          <p>Learn the basics</p>
-        </div>
-
-        <div class="card">
-          <h3>JavaScript</h3>
-          <p>Learn the basics</p>
-        </div>
-
-        <div class="card">
-          <h3>JavaScript</h3>
-          <p>Learn the basics</p>
-        </div>
-
-        <div class="card">
-          <h3>JavaScript</h3>
-          <p>Learn the basics</p>
-        </div>
-
-        <div class="card">
-          <h3>JavaScript</h3>
-          <p>Learn the basics</p>
-        </div>
-
-        <div class="card">
-          <h3>JavaScript</h3>
-          <p>Learn the basics</p>
-        </div>
-
-        <div class="card">
-          <h3>JavaScript</h3>
-          <p>Learn the basics</p>
-        </div>
-
-        <div class="card">
-          <h3>JavaScript</h3>
-          <p>Learn the basics</p>
+        <div class="filter-buttons">
+          <button data-filter="all" class="primary-btn active">All</button>
+          <button data-filter="frontend" class="primary-btn">Frontend</button>
+          <button data-filter="backend" class="primary-btn">Backend</button>
+          <button data-filter="devops" class="primary-btn">DevOps</button>
         </div>
       </div>
+
+      <div id="cardsContainer" class="cards"></div>
+      <div id="skeleton" class="cards"></div>
+
+      <div id="emptyCourses" class="empty-state">
+        No courses found 😕 <br />
+        Try another keyword
+      </div>
+
+      <div id="emptyCourses" class="empty-state">No courses found...</div>
     </section>
 
     <!-- CONTACT -->

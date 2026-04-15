@@ -32,7 +32,6 @@ const toast = document.getElementById("toast");
 // LOAD TASKS FROM LOCAL STORAGE
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-
 function loadFakeTasks() {
   const fakeData = [
     { text: "Learn JS", completed: false },
@@ -188,9 +187,9 @@ function updateProgress() {
     progressText.textContent = `${completed} of ${tasks.length} tasks completed`;
   }
 
-document.getElementById("completedTasks").textContent = completed;
+  document.getElementById("completedTasks").textContent = completed;
 
-document.getElementById("activeTasks").textContent = tasks.length - completed;
+  document.getElementById("activeTasks").textContent = tasks.length - completed;
 }
 
 // SAVE TO LOCAL STORAGE
@@ -215,7 +214,7 @@ addBtn.addEventListener("click", () => {
   tasks.push({ text, completed: false });
 
   showToast("Task added successfully");
-  
+
   input.value = "";
   input.focus();
   saveTasks();
@@ -304,7 +303,6 @@ document.querySelectorAll(".filters button").forEach((btn) => {
 
 document.getElementById("filterCompleted").classList.add("active");
 
-
 function showToast(message) {
   toast.textContent = message;
   toast.classList.add("show");
@@ -321,18 +319,237 @@ menuToggle.addEventListener("click", () => {
   navLinks.classList.toggle("active");
 });
 
-document.querySelectorAll(".nav-links a").forEach(link => {
+document.querySelectorAll(".nav-links a").forEach((link) => {
   link.addEventListener("click", () => {
     navLinks.classList.remove("active");
   });
 });
 
-// INITIAL LOAD
+const themeToggle = document.getElementById("themeToggle");
+
+if (themeToggle) {
+  const savedTheme = localStorage.getItem("theme") || "dark";
+
+  document.body.classList.remove("dark", "light");
+  document.body.classList.add(savedTheme);
+
+  themeToggle.addEventListener("click", () => {
+    const isDark = document.body.classList.contains("dark");
+
+    document.body.classList.toggle("dark", !isDark);
+    document.body.classList.toggle("light", isDark);
+
+    localStorage.setItem("theme", isDark ? "light" : "dark");
+  });
+}
+
+const startBtn = document.getElementById("startLearningBtn");
+if (startBtn) {
+  startBtn.addEventListener("click", () => {
+    document.querySelector('[data-page="learning"]').click();
+  });
+}
+
+const dashboardBtn = document.getElementById("goDashboardBtn");
+if (dashboardBtn) {
+  dashboardBtn.addEventListener("click", () => {
+    document.querySelector('[data-page="dashboard"]').click();
+  });
+}
+
+const loadUserBtn = document.getElementById("loadUserBtn");
+
+const userImg = document.getElementById("userImg");
+const userName = document.getElementById("userName");
+const userLocation = document.getElementById("userLocation");
+const userEmail = document.getElementById("userEmail");
+
+if (loadUserBtn) {
+  loadUserBtn.addEventListener("click", async () => {
+    userName.textContent = "Loading...";
+
+    try {
+      const res = await fetch("https://randomuser.me/api/");
+      const data = await res.json();
+
+      const user = data.results[0];
+
+      userImg.src = user.picture.large;
+      userName.textContent = `${user.name.first} ${user.name.last}`;
+      userLocation.textContent = `${user.location.country}`;
+      userEmail.textContent = user.email;
+    } catch (err) {
+      userName.textContent = "Failed to load user";
+    }
+  });
+}
+
+const weatherBtn = document.getElementById("getWeatherBtn");
+
+const weatherCity = document.getElementById("weatherCity");
+const weatherTemp = document.getElementById("weatherTemp");
+const weatherDesc = document.getElementById("weatherDesc");
+
+if (weatherBtn) {
+  weatherBtn.addEventListener("click", async () => {
+    const city = document.getElementById("cityInput").value;
+
+    if (!city) {
+      weatherCity.textContent = "Please enter a city!";
+      return;
+    }
+
+    weatherCity.textContent = "Loading...";
+    weatherTemp.textContent = "";
+    weatherDesc.textContent = "";
+
+    try {
+      const res = await fetch(`https://wttr.in/${city}?format=j1`);
+      const data = await res.json();
+
+      const current = data.current_condition[0];
+
+      weatherCity.textContent = `📍 ${city}`;
+      weatherTemp.textContent = `🌡️ ${current.temp_C}°C`;
+      weatherDesc.textContent = `🌥️ ${current.weatherDesc[0].value}`;
+    } catch (error) {
+      weatherCity.textContent = "Failed to load weather.";
+    }
+  });
+}
+
+document.getElementById("ctaStart").addEventListener("click", () => {
+  document.querySelector('[data-page="dashboard"]').click();
+});
+
 // INITIAL LOAD
 
 if (tasks.length === 0) {
-  loadFakeTasks(); 
+  loadFakeTasks();
 } else {
   renderTasks();
   updateProgress();
 }
+
+const courses = [
+  {
+    id: 1,
+    title: "JavaScript Basics",
+    category: "frontend",
+    level: "Beginner",
+    duration: "4h",
+  },
+  {
+    id: 2,
+    title: "React Advanced",
+    category: "frontend",
+    level: "Advanced",
+    duration: "8h",
+  },
+  {
+    id: 3,
+    title: "Node.js API",
+    category: "backend",
+    level: "Intermediate",
+    duration: "6h",
+  },
+  {
+    id: 4,
+    title: "MongoDB",
+    category: "backend",
+    level: "Beginner",
+    duration: "3h",
+  },
+  {
+    id: 5,
+    title: "Docker Essentials",
+    category: "devops",
+    level: "Intermediate",
+    duration: "5h",
+  },
+  {
+    id: 6,
+    title: "Kubernetes Intro",
+    category: "devops",
+    level: "Advanced",
+    duration: "7h",
+  },
+];
+let courseFilter = "all";
+const cardsContainer = document.getElementById("cardsContainer");
+const searchInput = document.getElementById("searchInput");
+const emptyCourses = document.getElementById("emptyCourses");
+
+function showSkeleton() {
+  const skeleton = document.getElementById("skeleton");
+  skeleton.innerHTML = "";
+
+  for (let i = 0; i < 4; i++) {
+    const div = document.createElement("div");
+    div.classList.add("skeleton-card");
+    skeleton.appendChild(div);
+  }
+}
+
+function hideSkeleton() {
+  document.getElementById("skeleton").innerHTML = "";
+}
+
+function renderCourses() {
+  showSkeleton();
+  cardsContainer.innerHTML = "";
+
+  let filtered = courses.filter((course) => {
+    const matchCategory =
+      courseFilter === "all" || course.category === courseFilter;
+
+    const matchSearch = course.title
+      .toLowerCase()
+      .includes(searchInput.value.toLowerCase());
+
+    return matchCategory && matchSearch;
+  });
+
+  if (filtered.length === 0) {
+    emptyCourses.style.display = "block";
+  } else {
+    emptyCourses.style.display = "none";
+  }
+
+  filtered.forEach((course) => {
+    const card = document.createElement("div");
+    card.classList.add("card", "fade-in");
+
+    card.innerHTML = `
+  <h3>${course.title}</h3>
+
+  <div class="course-meta">
+    <span>${course.level}</span>
+    <span>⏱ ${course.duration}</span>
+  </div>
+
+  <span class="tag">${course.category}</span>
+`;
+
+    cardsContainer.appendChild(card);
+  });
+  hideSkeleton();
+}
+
+document.querySelectorAll(".filter-buttons button").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document
+      .querySelectorAll(".filter-buttons button")
+      .forEach((b) => b.classList.remove("active"));
+
+    btn.classList.add("active");
+
+    courseFilter = btn.dataset.filter;
+
+    renderCourses();
+  });
+});
+
+searchInput.addEventListener("input", renderCourses);
+
+renderCourses();
