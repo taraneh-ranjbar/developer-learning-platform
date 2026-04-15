@@ -32,6 +32,18 @@ const toast = document.getElementById("toast");
 // LOAD TASKS FROM LOCAL STORAGE
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
+
+function loadFakeTasks() {
+  const fakeData = [
+    { text: "Learn JS", completed: false },
+    { text: "Build Project", completed: true },
+  ];
+
+  tasks = fakeData;
+  saveTasks();
+  renderTasks();
+}
+
 // RENDER TASKS
 function renderTasks() {
   list.innerHTML = "";
@@ -301,6 +313,19 @@ function showToast(message) {
     toast.classList.remove("show");
   }, 2000);
 }
+
+const menuToggle = document.getElementById("menuToggle");
+const navLinks = document.querySelector(".nav-links");
+
+menuToggle.addEventListener("click", () => {
+  navLinks.classList.toggle("active");
+});
+
+document.querySelectorAll(".nav-links a").forEach(link => {
+  link.addEventListener("click", () => {
+    navLinks.classList.remove("active");
+  });
+});
 
 // INITIAL LOAD
 renderTasks();
