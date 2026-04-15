@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="dark">
+<body class="light">
 
   <!-- NAVBAR -->
   <nav class="navbar">
@@ -51,28 +51,38 @@
     <div class="dashboard">
          <h1>Dashboard</h1>
 
-    <div class="progress-bar">
-        <div class="progress"></div>
-      
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress" id="progress"></div>
+      </div>
+
+      <p id="progressText">No tasks completed yet</p>
     </div>
 
     <div class="task-input">
       <input id="taskInput" type="text" placeholder="Add a task..." />
-         <button id="addTaskBtn">Add</button>
-    </div>
-
-  
-     <ul class="task-list">
-        <li><input type="checkbox"> Learn JS</li>
-     </ul>
    
+         <button id="addTaskBtn">Add</button>
+          
+    </div>
+     <div id="errorMsg" style="color:red; display:none;"></div>
+    <div id="successMsg" class="success-msg"></div>
+  
+  
+     <ul id="taskList" class="task-list"></ul>
+        <div id="emptyState" class="empty-state">
+         No tasks yet. Start by adding one!
+      </div>
 
     <div class="filters">
-      <button>All</button>
-      <button>Completed</button>
-      <button>Active</button>
+        <button id="filterAll">All</button>
+        <button id="filterCompleted">Completed</button>
+        <button id="filterActive">Active</button>
     </div>
+        <div class="filter-info" id="filterInfo">
+      Showing all tasks
     </div>
+  </div>
    
   </section>
 
@@ -148,7 +158,8 @@
     <p>© 2026 Prime Axivon Technologies Inc.</p>
   </footer>
 
-  <script src="app.js"></script>
+ 
 
 </body>
+ <script src="app.js"></script>
 </html>
