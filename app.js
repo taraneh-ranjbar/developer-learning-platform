@@ -481,6 +481,34 @@ const courses = [
     level: "Advanced",
     duration: "7h",
   },
+  {
+    id: 7,
+    title: "Micro Frontends Architecture",
+    category: "frontend",
+    level: "Advanced",
+    duration: "10h",
+  },
+  {
+    id: 8,
+    title: "Web Animations with GSAP",
+    category: "frontend",
+    level: "Advanced",
+    duration: "9h",
+  },
+  {
+    id: 9,
+    title: "TypeScript Mastery",
+    category: "frontend",
+    level: "Advanced",
+    duration: "7h",
+  },
+  {
+    id: 10,
+    title: "Frontend Performance Optimization",
+    category: "frontend",
+    level: "Advanced",
+    duration: "6h",
+  },
 ];
 let courseFilter = "all";
 const cardsContainer = document.getElementById("cardsContainer");
@@ -496,7 +524,7 @@ const modalDuration = document.getElementById("modalDuration");
 function showSkeleton() {
   const skeleton = document.getElementById("skeleton");
 
-  if (!skeleton) return; 
+  if (!skeleton) return;
 
   skeleton.innerHTML = "";
 
@@ -535,8 +563,7 @@ function renderCourses() {
     });
 
     if (emptyCourses) {
-      emptyCourses.style.display =
-        filtered.length === 0 ? "block" : "none";
+      emptyCourses.style.display = filtered.length === 0 ? "block" : "none";
     }
 
     filtered.forEach((course) => {
@@ -552,9 +579,19 @@ function renderCourses() {
         <span class="tag">${course.category}</span>
       `;
 
+      card.addEventListener("click", () => {
+        if (!modal) return;
+
+        modal.style.display = "flex";
+
+        modalTitle.textContent = course.title;
+        modalLevel.textContent = "Level: " + course.level;
+        modalCategory.textContent = "Category: " + course.category;
+        modalDuration.textContent = "Duration: " + course.duration;
+      });
+
       cardsContainer.appendChild(card);
     });
-
   }, 600);
 }
 
