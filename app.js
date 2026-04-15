@@ -1,16 +1,15 @@
-
 //SPA
 const links = document.querySelectorAll("[data-page]");
 const pages = document.querySelectorAll(".page");
 
-links.forEach(link => {
+links.forEach((link) => {
   link.addEventListener("click", (e) => {
     e.preventDefault();
 
     const target = link.getAttribute("data-page");
 
     // hide all pages
-    pages.forEach(page => {
+    pages.forEach((page) => {
       page.classList.remove("active");
     });
 
@@ -30,7 +29,6 @@ const progressText = document.getElementById("progressText");
 const successMsg = document.getElementById("successMsg");
 const emptyState = document.getElementById("emptyState");
 
-
 // LOAD TASKS FROM LOCAL STORAGE
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
@@ -40,30 +38,29 @@ function renderTasks() {
 
   let filteredTasks = tasks;
 
-    if (tasks.length === 0) {
+  if (tasks.length === 0) {
     emptyState.style.display = "block";
-    } else {
-      emptyState.style.display = "none";
-    }
+  } else {
+    emptyState.style.display = "none";
+  }
 
   if (currentFilter === "completed") {
-    filteredTasks = tasks.filter(t => t.completed);
+    filteredTasks = tasks.filter((t) => t.completed);
   }
 
   if (currentFilter === "active") {
-    filteredTasks = tasks.filter(t => !t.completed);
+    filteredTasks = tasks.filter((t) => !t.completed);
   }
 
-    filteredTasks.forEach((task, index) => {
+  filteredTasks.forEach((task, index) => {
+    const li = document.createElement("li");
 
-      const li = document.createElement("li");
+    li.classList.add("fade-in");
 
-      li.classList.add("fade-in");
-
-      if (task.completed) {
-        li.classList.add("completed");
-      }
-      li.innerHTML = `
+    if (task.completed) {
+      li.classList.add("completed");
+    }
+    li.innerHTML = `
         <input type="checkbox" ${task.completed ? "checked" : ""} data-index="${index}" class="toggle">
 
         <span class="task-text">${task.text}</span>
@@ -73,74 +70,71 @@ function renderTasks() {
         <button data-index="${index}" class="delete-btn">❌</button>
       `;
 
-      const textSpan = li.querySelector(".task-text");
+    const textSpan = li.querySelector(".task-text");
 
-        textSpan.addEventListener("click", () => {
+    textSpan.addEventListener("click", () => {
+      const inputEdit = document.createElement("input");
+      inputEdit.type = "text";
+      inputEdit.value = task.text;
+      inputEdit.classList.add("edit-input");
 
-          const inputEdit = document.createElement("input");
-          inputEdit.type = "text";
-          inputEdit.value = task.text;
-          inputEdit.classList.add("edit-input");
+      const saveBtn = document.createElement("button");
+      saveBtn.textContent = "✔";
+      saveBtn.classList.add("save-btn");
 
-          const saveBtn = document.createElement("button");
-          saveBtn.textContent = "✔";
-          saveBtn.classList.add("save-btn");
+      const cancelBtn = document.createElement("button");
+      cancelBtn.textContent = "✖";
+      cancelBtn.classList.add("cancel-btn");
 
-          const cancelBtn = document.createElement("button");
-          cancelBtn.textContent = "✖";
-          cancelBtn.classList.add("cancel-btn");
+      const wrapper = document.createElement("div");
+      wrapper.classList.add("edit-wrapper");
 
-          const wrapper = document.createElement("div");
-          wrapper.classList.add("edit-wrapper");
+      wrapper.appendChild(inputEdit);
+      wrapper.appendChild(saveBtn);
+      wrapper.appendChild(cancelBtn);
 
-          wrapper.appendChild(inputEdit);
-          wrapper.appendChild(saveBtn);
-          wrapper.appendChild(cancelBtn);
+      li.replaceChild(wrapper, textSpan);
 
-          li.replaceChild(wrapper, textSpan);
+      inputEdit.focus();
 
-          inputEdit.focus();
-
-          // ✅ SAVE
-          saveBtn.addEventListener("click", () => {
-            task.text = inputEdit.value.trim() || task.text;
-            saveTasks();
-            renderTasks();
-          });
-
-          // ❌ CANCEL
-          cancelBtn.addEventListener("click", () => {
-            renderTasks();
-          });
-
-        });
-
-    
-      list.appendChild(li);
-
-      li.setAttribute("draggable", true);
-        li.addEventListener("dragstart", () => {
-        draggedItem = task;
-      });
-
-      li.addEventListener("dragover", (e) => {
-        e.preventDefault();
-      });
-
-      li.addEventListener("drop", () => {
-        const draggedIndex = tasks.indexOf(draggedItem);
-        const droppedIndex = tasks.indexOf(task);
-
-        tasks.splice(draggedIndex, 1);
-        tasks.splice(droppedIndex, 0, draggedItem);
-
+      // ✅ SAVE
+      saveBtn.addEventListener("click", () => {
+        task.text = inputEdit.value.trim() || task.text;
         saveTasks();
+        renderTasks();
+      });
+
+      // ❌ CANCEL
+      cancelBtn.addEventListener("click", () => {
         renderTasks();
       });
     });
 
-    updateProgress();
-  }
+    list.appendChild(li);
+
+    li.setAttribute("draggable", true);
+    li.addEventListener("dragstart", () => {
+      draggedItem = task;
+    });
+
+    li.addEventListener("dragover", (e) => {
+      e.preventDefault();
+    });
+
+    li.addEventListener("drop", () => {
+      const draggedIndex = tasks.indexOf(draggedItem);
+      const droppedIndex = tasks.indexOf(task);
+
+      tasks.splice(draggedIndex, 1);
+      tasks.splice(droppedIndex, 0, draggedItem);
+
+      saveTasks();
+      renderTasks();
+    });
+  });
+
+  updateProgress();
+}
 
 document.getElementById("filterAll").addEventListener("click", () => {
   currentFilter = "all";
@@ -168,8 +162,8 @@ function updateProgress() {
     progressText.textContent = "No tasks yet";
     return;
   }
-
-  const completed = tasks.filter(t => t.completed).length;
+  document.getElementById("totalTasks").textContent = tasks.length;
+  const completed = tasks.filter((t) => t.completed).length;
   const percent = (completed / tasks.length) * 100;
 
   progress.style.width = percent + "%";
@@ -181,6 +175,10 @@ function updateProgress() {
   } else {
     progressText.textContent = `${completed} of ${tasks.length} tasks completed`;
   }
+
+document.getElementById("completedTasks").textContent = completed;
+
+document.getElementById("activeTasks").textContent = tasks.length - completed;
 }
 
 // SAVE TO LOCAL STORAGE
@@ -192,23 +190,23 @@ function saveTasks() {
 addBtn.addEventListener("click", () => {
   const text = input.value.trim();
 
-const errorMsg = document.getElementById("errorMsg");
+  const errorMsg = document.getElementById("errorMsg");
 
-if (text === "") {
-  errorMsg.textContent = "Please enter a task!";
-  errorMsg.style.display = "block";
-  return;
-}
+  if (text === "") {
+    errorMsg.textContent = "Please enter a task!";
+    errorMsg.style.display = "block";
+    return;
+  }
 
-errorMsg.style.display = "none";
+  errorMsg.style.display = "none";
 
   tasks.push({ text, completed: false });
   successMsg.textContent = "Task added successfully ✔";
   successMsg.classList.add("show");
 
-    setTimeout(() => {
-      successMsg.classList.remove("show");
-    }, 2000);
+  setTimeout(() => {
+    successMsg.classList.remove("show");
+  }, 2000);
 
   input.value = "";
   input.focus();
@@ -250,48 +248,47 @@ list.addEventListener("click", (e) => {
   }
 
   // ✏️ EDIT BUTTON
-if (e.target.classList.contains("edit-btn")) {
-  const index = e.target.dataset.index;
-  const task = tasks[index];
+  if (e.target.classList.contains("edit-btn")) {
+    const index = e.target.dataset.index;
+    const task = tasks[index];
 
-  const li = e.target.closest("li");
+    const li = e.target.closest("li");
 
-  const inputEdit = document.createElement("input");
-  inputEdit.type = "text";
-  inputEdit.value = task.text;
-  inputEdit.classList.add("edit-input");
+    const inputEdit = document.createElement("input");
+    inputEdit.type = "text";
+    inputEdit.value = task.text;
+    inputEdit.classList.add("edit-input");
 
-  const saveBtn = document.createElement("button");
-  saveBtn.textContent = "✔";
-  saveBtn.classList.add("save-btn");
+    const saveBtn = document.createElement("button");
+    saveBtn.textContent = "✔";
+    saveBtn.classList.add("save-btn");
 
-  const cancelBtn = document.createElement("button");
-  cancelBtn.textContent = "✖";
-  cancelBtn.classList.add("cancel-btn");
+    const cancelBtn = document.createElement("button");
+    cancelBtn.textContent = "✖";
+    cancelBtn.classList.add("cancel-btn");
 
-  li.innerHTML = "";
-  li.appendChild(inputEdit);
-  li.appendChild(saveBtn);
-  li.appendChild(cancelBtn);
+    li.innerHTML = "";
+    li.appendChild(inputEdit);
+    li.appendChild(saveBtn);
+    li.appendChild(cancelBtn);
 
-  inputEdit.focus();
+    inputEdit.focus();
 
-  // SAVE
-  saveBtn.addEventListener("click", () => {
-    task.text = inputEdit.value.trim() || task.text;
-    saveTasks();
-    renderTasks();
-  });
+    // SAVE
+    saveBtn.addEventListener("click", () => {
+      task.text = inputEdit.value.trim() || task.text;
+      saveTasks();
+      renderTasks();
+    });
 
-  // CANCEL
-  cancelBtn.addEventListener("click", () => {
-    renderTasks();
-  });
-}
-
+    // CANCEL
+    cancelBtn.addEventListener("click", () => {
+      renderTasks();
+    });
+  }
 });
 
-document.querySelectorAll(".filters button").forEach(btn => {
+document.querySelectorAll(".filters button").forEach((btn) => {
   btn.classList.remove("active");
 });
 
@@ -300,4 +297,3 @@ document.getElementById("filterCompleted").classList.add("active");
 // INITIAL LOAD
 renderTasks();
 updateProgress();
-
