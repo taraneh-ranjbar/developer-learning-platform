@@ -22,7 +22,6 @@
         <li><a href="#" data-page="contact">Contact</a></li>
       </ul>
       <button class="menu-toggle" id="menuToggle">☰</button>
-      <ul class="nav-links"></ul>
     </nav>
 
     <!-- HOME -->
@@ -70,9 +69,20 @@
         </div>
         <!-- TASK ANALYTICS -->
         <div class="stats">
-          <span id="totalTasks">0</span> Total
-          <span id="completedTasks">0</span> Completed
-          <span id="activeTasks">0</span> Active
+          <div class="stat-box">
+            <span id="totalTasks">0</span>
+            <p>Total</p>
+          </div>
+
+          <div class="stat-box">
+            <span id="completedTasks">0</span>
+            <p>Completed</p>
+          </div>
+
+          <div class="stat-box">
+            <span id="activeTasks">0</span>
+            <p>Active</p>
+          </div>
         </div>
         <!-- toast & msg -->
         <div id="errorMsg" style="color: red; display: none"></div>

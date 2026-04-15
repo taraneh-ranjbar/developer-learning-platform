@@ -328,5 +328,11 @@ document.querySelectorAll(".nav-links a").forEach(link => {
 });
 
 // INITIAL LOAD
-renderTasks();
-updateProgress();
+// INITIAL LOAD
+
+if (tasks.length === 0) {
+  loadFakeTasks(); 
+} else {
+  renderTasks();
+  updateProgress();
+}
