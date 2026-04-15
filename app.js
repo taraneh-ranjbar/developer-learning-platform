@@ -26,8 +26,8 @@ const addBtn = document.getElementById("addTaskBtn");
 const list = document.getElementById("taskList");
 const filterInfo = document.getElementById("filterInfo");
 const progressText = document.getElementById("progressText");
-const successMsg = document.getElementById("successMsg");
 const emptyState = document.getElementById("emptyState");
+const toast = document.getElementById("toast");
 
 // LOAD TASKS FROM LOCAL STORAGE
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
@@ -201,13 +201,9 @@ addBtn.addEventListener("click", () => {
   errorMsg.style.display = "none";
 
   tasks.push({ text, completed: false });
-  successMsg.textContent = "Task added successfully ✔";
-  successMsg.classList.add("show");
 
-  setTimeout(() => {
-    successMsg.classList.remove("show");
-  }, 2000);
-
+  showToast("Task added successfully");
+  
   input.value = "";
   input.focus();
   saveTasks();
@@ -239,6 +235,8 @@ list.addEventListener("click", (e) => {
     const item = e.target.closest("li");
 
     item.classList.add("fade-out");
+
+    showToast("Task deleted");
 
     setTimeout(() => {
       tasks.splice(index, 1);
@@ -293,6 +291,16 @@ document.querySelectorAll(".filters button").forEach((btn) => {
 });
 
 document.getElementById("filterCompleted").classList.add("active");
+
+
+function showToast(message) {
+  toast.textContent = message;
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2000);
+}
 
 // INITIAL LOAD
 renderTasks();
