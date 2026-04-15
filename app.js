@@ -7,14 +7,13 @@ links.forEach((link) => {
     e.preventDefault();
 
     const target = link.getAttribute("data-page");
+    const nextPage = document.getElementById(target);
 
-    // hide all pages
     pages.forEach((page) => {
       page.classList.remove("active");
     });
 
-    // show selected page
-    document.getElementById(target).classList.add("active");
+    nextPage.classList.add("active");
   });
 });
 
@@ -301,7 +300,11 @@ document.querySelectorAll(".filters button").forEach((btn) => {
   btn.classList.remove("active");
 });
 
-document.getElementById("filterCompleted").classList.add("active");
+const filterCompletedBtn = document.getElementById("filterCompleted");
+
+if (filterCompletedBtn) {
+  filterCompletedBtn.classList.add("active");
+}
 
 function showToast(message) {
   toast.textContent = message;
@@ -418,9 +421,13 @@ if (weatherBtn) {
   });
 }
 
-document.getElementById("ctaStart").addEventListener("click", () => {
-  document.querySelector('[data-page="dashboard"]').click();
-});
+const ctaBtn = document.getElementById("ctaStart");
+
+if (ctaBtn) {
+  ctaBtn.addEventListener("click", () => {
+    document.querySelector('[data-page="dashboard"]').click();
+  });
+}
 
 // INITIAL LOAD
 
@@ -479,9 +486,18 @@ let courseFilter = "all";
 const cardsContainer = document.getElementById("cardsContainer");
 const searchInput = document.getElementById("searchInput");
 const emptyCourses = document.getElementById("emptyCourses");
+const modal = document.getElementById("courseModal");
+const closeModal = document.getElementById("closeModal");
+const modalTitle = document.getElementById("modalTitle");
+const modalLevel = document.getElementById("modalLevel");
+const modalCategory = document.getElementById("modalCategory");
+const modalDuration = document.getElementById("modalDuration");
 
 function showSkeleton() {
   const skeleton = document.getElementById("skeleton");
+
+  if (!skeleton) return; 
+
   skeleton.innerHTML = "";
 
   for (let i = 0; i < 4; i++) {
@@ -492,64 +508,90 @@ function showSkeleton() {
 }
 
 function hideSkeleton() {
-  document.getElementById("skeleton").innerHTML = "";
+  const skeleton = document.getElementById("skeleton");
+  if (skeleton) {
+    skeleton.innerHTML = "";
+  }
 }
-
 function renderCourses() {
-  showSkeleton();
+  if (!cardsContainer || !searchInput) return;
+
   cardsContainer.innerHTML = "";
 
-  let filtered = courses.filter((course) => {
-    const matchCategory =
-      courseFilter === "all" || course.category === courseFilter;
+  showSkeleton();
 
-    const matchSearch = course.title
-      .toLowerCase()
-      .includes(searchInput.value.toLowerCase());
+  setTimeout(() => {
+    hideSkeleton();
 
-    return matchCategory && matchSearch;
-  });
+    let filtered = courses.filter((course) => {
+      const matchCategory =
+        courseFilter === "all" || course.category === courseFilter;
 
-  if (filtered.length === 0) {
-    emptyCourses.style.display = "block";
-  } else {
-    emptyCourses.style.display = "none";
-  }
+      const matchSearch = course.title
+        .toLowerCase()
+        .includes(searchInput.value.toLowerCase());
 
-  filtered.forEach((course) => {
-    const card = document.createElement("div");
-    card.classList.add("card", "fade-in");
+      return matchCategory && matchSearch;
+    });
 
-    card.innerHTML = `
-  <h3>${course.title}</h3>
+    if (emptyCourses) {
+      emptyCourses.style.display =
+        filtered.length === 0 ? "block" : "none";
+    }
 
-  <div class="course-meta">
-    <span>${course.level}</span>
-    <span>⏱ ${course.duration}</span>
-  </div>
+    filtered.forEach((course) => {
+      const card = document.createElement("div");
+      card.classList.add("card");
 
-  <span class="tag">${course.category}</span>
-`;
+      card.innerHTML = `
+        <h3>${course.title}</h3>
+        <div class="course-meta">
+          <span>${course.level}</span>
+          <span>⏱ ${course.duration}</span>
+        </div>
+        <span class="tag">${course.category}</span>
+      `;
 
-    cardsContainer.appendChild(card);
-  });
-  hideSkeleton();
+      cardsContainer.appendChild(card);
+    });
+
+  }, 600);
 }
 
-document.querySelectorAll(".filter-buttons button").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    document
-      .querySelectorAll(".filter-buttons button")
-      .forEach((b) => b.classList.remove("active"));
-
-    btn.classList.add("active");
-
-    courseFilter = btn.dataset.filter;
-
-    renderCourses();
+if (closeModal) {
+  closeModal.addEventListener("click", () => {
+    modal.style.display = "none";
   });
+}
+
+window.addEventListener("click", (e) => {
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
 });
 
-searchInput.addEventListener("input", renderCourses);
+const filterBtns = document.querySelectorAll(".filter-buttons button");
 
-renderCourses();
+if (filterBtns.length > 0) {
+  filterBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document
+        .querySelectorAll(".filter-buttons button")
+        .forEach((b) => b.classList.remove("active"));
+
+      btn.classList.add("active");
+
+      courseFilter = btn.dataset.filter;
+
+      renderCourses();
+    });
+  });
+}
+
+if (searchInput) {
+  searchInput.addEventListener("input", renderCourses);
+}
+
+if (cardsContainer) {
+  renderCourses();
+}
