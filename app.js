@@ -402,79 +402,21 @@ if (tasks.length === 0) {
   updateProgress();
 }
 
- const courses = [
-  {
-    id: 1,
-    title: "JavaScript Basics",
-    category: "frontend",
-    level: "Beginner",
-    duration: "4h",
-  },
-  {
-    id: 2,
-    title: "React Advanced",
-    category: "frontend",
-    level: "Advanced",
-    duration: "8h",
-  },
-  {
-    id: 3,
-    title: "Node.js API",
-    category: "backend",
-    level: "Intermediate",
-    duration: "6h",
-  },
-  {
-    id: 4,
-    title: "MongoDB",
-    category: "backend",
-    level: "Beginner",
-    duration: "3h",
-  },
-  {
-    id: 5,
-    title: "Docker Essentials",
-    category: "devops",
-    level: "Intermediate",
-    duration: "5h",
-  },
-  {
-    id: 6,
-    title: "Kubernetes Intro",
-    category: "devops",
-    level: "Advanced",
-    duration: "7h",
-  },
-  {
-    id: 7,
-    title: "Micro Frontends Architecture",
-    category: "frontend",
-    level: "Advanced",
-    duration: "10h",
-  },
-  {
-    id: 8,
-    title: "Web Animations with GSAP",
-    category: "frontend",
-    level: "Advanced",
-    duration: "9h",
-  },
-  {
-    id: 9,
-    title: "TypeScript Mastery",
-    category: "frontend",
-    level: "Advanced",
-    duration: "7h",
-  },
-  {
-    id: 10,
-    title: "Frontend Performance Optimization",
-    category: "frontend",
-    level: "Advanced",
-    duration: "6h",
-  },
-];
+let courses = [];
 let courseFilter = "all";
+
+async function loadCourses() {
+  try {
+    const response = await fetch("courses.json");
+    if (!response.ok) throw new Error("Failed to load courses");
+    courses = await response.json();
+    renderCourses();
+  } catch (error) {
+    console.error("Error loading courses:", error);
+    emptyCourses.textContent =
+      "Failed to load courses. Please refresh the page.";
+  }
+}
 const cardsContainer = document.getElementById("cardsContainer");
 const searchInput = document.getElementById("searchInput");
 const emptyCourses = document.getElementById("emptyCourses");
@@ -506,8 +448,6 @@ function hideSkeleton() {
   }
 }
 
-
-
 function renderCourses() {
   if (!cardsContainer || !searchInput) return;
 
@@ -517,7 +457,6 @@ function renderCourses() {
 
   //setTimeout(() => {
   //  hideSkeleton();
-
 
   let filtered = courses.filter((course) => {
     const matchCategory =
@@ -598,7 +537,7 @@ if (searchInput) {
 }
 
 if (cardsContainer) {
-  renderCourses();
+  loadCourses();
 }
 
 const contactForm = document.getElementById("contactForm");
