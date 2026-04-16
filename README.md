@@ -76,8 +76,27 @@ This platform provides:
 
 ---
 
+## Tech Stack
+- HTML5
+- CSS3 (Flexbox, Grid)
+- JavaScript (ES6)
+- Fetch API
+- LocalStorage
+
+## Challenges & Solutions
+
+One major challenge was handling SPA navigation.
+Solution: Used class-based page switching with JS.
+
 ## Future Improvements
 
 * Backend integration
 * User accounts
 * Database
+
+## Live Demo
+https://your-project-link.vercel.app
+
+## How to Run
+1. Clone repo
+2. Open index.html
