@@ -145,6 +145,26 @@ section {
   padding: 20px;
 }
 
+
+
+@media (max-width: 500px) {
+  .weather-widget {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .weather-widget input {
+    margin-right: 0;
+    width: 100%;
+  }
+
+  .weather-widget button {
+    width: 100%;
+  }
+}
+
+
 /* =====================
 NAVBAR
 ===================== */
@@ -227,6 +247,7 @@ HERO
   justify-content: center;
   text-align: center;
   background: radial-gradient(circle at 30% 30%, #324c95, #0f172a);
+  padding: 40px 20px;
 }
 
 .hero-content {
@@ -254,6 +275,16 @@ HERO
 
 .hero-buttons {
   margin-top: 30px;
+}
+
+@media (max-width: 600px) {
+  .hero h1 {
+    font-size: 28px;
+  }
+
+  .hero p {
+    font-size: 14px;
+  }
 }
 
 @keyframes fadeUp {
@@ -844,7 +875,8 @@ section {
     right: 0;
     background: var(--card);
     flex-direction: column;
-    width: 200px;
+    width: 100%;
+    max-width: 250px;
     padding: 15px;
     gap: 15px;
     display: none;
@@ -880,6 +912,15 @@ section {
 
 .logo-text {
   letter-spacing: 0.5px;
+}
+
+
+@media (max-width: 600px) {
+  .logo img {
+    margin: 5px;
+    width: 40px;
+    height: 40px;
+  }
 }
 
 .services {
@@ -1219,7 +1260,7 @@ body.light .theme-switch {
   padding: 40px;
   opacity: 0.6;
   font-size: 16px;
-  display: none; /* مهم */
+  display: none; 
 }
 
 .modal {
@@ -1249,6 +1290,17 @@ body.light .theme-switch {
 
   animation: fadeUp 0.3s ease;
 }
+
+@media (max-width: 500px) {
+  .modal-content {
+    padding: 20px;
+  }
+
+  .modal-img {
+    width: 40%;
+  }
+}
+
 
 .close-btn {
   position: absolute;
@@ -1323,4 +1375,11 @@ body.light .theme-switch {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@media (max-width: 500px) {
+  .primary-btn {
+    width: 100%;
+    padding: 12px;
+  }
 }
