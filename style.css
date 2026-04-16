@@ -1238,3 +1238,56 @@ body.light .theme-switch {
   margin-top: 15px;
   width: 100%;
 }
+
+.contact-page {
+  justify-content: center;
+  align-items: center;
+}
+
+.contact-container {
+  width: 100%;
+  max-width: 500px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.contact-sub {
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.input-group input,
+.input-group textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.input-group textarea {
+  min-height: 120px;
+  resize: none;
+}
+
+.form-msg {
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.contact-page.active {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

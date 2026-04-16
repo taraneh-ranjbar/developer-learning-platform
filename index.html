@@ -205,15 +205,33 @@
     </div>
 
     <!-- CONTACT -->
-    <section id="contact" class="page">
-      <h1>Contact</h1>
+    <section id="contact" class="page contact-page">
+      <div class="contact-container">
+        <h1>Contact Us</h1>
+        <p class="contact-sub">
+          Have a question or feedback? Send us a message
+        </p>
 
-      <form>
-        <input type="text" placeholder="Name" />
-        <input type="email" placeholder="Email" />
-        <textarea placeholder="Message"></textarea>
-        <button type="submit">Send</button>
-      </form>
+        <form id="contactForm" class="contact-form">
+          <div class="input-group">
+            <input type="text" id="name" placeholder="Your Name" />
+          </div>
+
+          <div class="input-group">
+            <input type="email" id="email" placeholder="Your Email" />
+          </div>
+
+          <div class="input-group">
+            <textarea id="message" placeholder="Your Message"></textarea>
+          </div>
+
+          <button type="submit" class="primary-btn" id="sendBtn">
+            Send Message
+          </button>
+
+          <p id="formMsg" class="form-msg"></p>
+        </form>
+      </div>
     </section>
 
     <!-- FOOTER -->

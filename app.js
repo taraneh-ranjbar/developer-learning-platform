@@ -13,7 +13,9 @@ links.forEach((link) => {
       page.classList.remove("active");
     });
 
-    nextPage.classList.add("active");
+    if (nextPage) {
+      nextPage.classList.add("active");
+    }
   });
 });
 
@@ -81,44 +83,6 @@ function renderTasks() {
       `;
 
     const textSpan = li.querySelector(".task-text");
-
-    textSpan.addEventListener("click", () => {
-      const inputEdit = document.createElement("input");
-      inputEdit.type = "text";
-      inputEdit.value = task.text;
-      inputEdit.classList.add("edit-input");
-
-      const saveBtn = document.createElement("button");
-      saveBtn.textContent = "✔";
-      saveBtn.classList.add("save-btn");
-
-      const cancelBtn = document.createElement("button");
-      cancelBtn.textContent = "✖";
-      cancelBtn.classList.add("cancel-btn");
-
-      const wrapper = document.createElement("div");
-      wrapper.classList.add("edit-wrapper");
-
-      wrapper.appendChild(inputEdit);
-      wrapper.appendChild(saveBtn);
-      wrapper.appendChild(cancelBtn);
-
-      li.replaceChild(wrapper, textSpan);
-
-      inputEdit.focus();
-
-      // ✅ SAVE
-      saveBtn.addEventListener("click", () => {
-        task.text = inputEdit.value.trim() || task.text;
-        saveTasks();
-        renderTasks();
-      });
-
-      // ❌ CANCEL
-      cancelBtn.addEventListener("click", () => {
-        renderTasks();
-      });
-    });
 
     list.appendChild(li);
 
@@ -255,7 +219,7 @@ list.addEventListener("click", (e) => {
     }, 300);
   }
 
-  // ✏️ EDIT BUTTON
+  //  EDIT BUTTON
   if (e.target.classList.contains("edit-btn")) {
     const index = e.target.dataset.index;
     const task = tasks[index];
@@ -296,9 +260,9 @@ list.addEventListener("click", (e) => {
   }
 });
 
-document.querySelectorAll(".filters button").forEach((btn) => {
-  btn.classList.remove("active");
-});
+document
+  .querySelectorAll(".filters button")
+  .forEach((b) => b.classList.remove("active"));
 
 const filterCompletedBtn = document.getElementById("filterCompleted");
 
@@ -438,7 +402,7 @@ if (tasks.length === 0) {
   updateProgress();
 }
 
-const courses = [
+ const courses = [
   {
     id: 1,
     title: "JavaScript Basics",
@@ -541,36 +505,40 @@ function hideSkeleton() {
     skeleton.innerHTML = "";
   }
 }
+
+
+
 function renderCourses() {
   if (!cardsContainer || !searchInput) return;
 
   cardsContainer.innerHTML = "";
 
-  showSkeleton();
+  //showSkeleton();
 
-  setTimeout(() => {
-    hideSkeleton();
+  //setTimeout(() => {
+  //  hideSkeleton();
 
-    let filtered = courses.filter((course) => {
-      const matchCategory =
-        courseFilter === "all" || course.category === courseFilter;
 
-      const matchSearch = course.title
-        .toLowerCase()
-        .includes(searchInput.value.toLowerCase());
+  let filtered = courses.filter((course) => {
+    const matchCategory =
+      courseFilter === "all" || course.category === courseFilter;
 
-      return matchCategory && matchSearch;
-    });
+    const matchSearch = course.title
+      .toLowerCase()
+      .includes(searchInput.value.toLowerCase());
 
-    if (emptyCourses) {
-      emptyCourses.style.display = filtered.length === 0 ? "block" : "none";
-    }
+    return matchCategory && matchSearch;
+  });
 
-    filtered.forEach((course) => {
-      const card = document.createElement("div");
-      card.classList.add("card");
+  if (emptyCourses) {
+    emptyCourses.style.display = filtered.length === 0 ? "block" : "none";
+  }
 
-      card.innerHTML = `
+  filtered.forEach((course) => {
+    const card = document.createElement("div");
+    card.classList.add("card");
+
+    card.innerHTML = `
         <h3>${course.title}</h3>
         <div class="course-meta">
           <span>${course.level}</span>
@@ -579,20 +547,20 @@ function renderCourses() {
         <span class="tag">${course.category}</span>
       `;
 
-      card.addEventListener("click", () => {
-        if (!modal) return;
+    card.addEventListener("click", () => {
+      if (!modal) return;
 
-        modal.style.display = "flex";
+      modal.style.display = "flex";
 
-        modalTitle.textContent = course.title;
-        modalLevel.textContent = "Level: " + course.level;
-        modalCategory.textContent = "Category: " + course.category;
-        modalDuration.textContent = "Duration: " + course.duration;
-      });
-
-      cardsContainer.appendChild(card);
+      modalTitle.textContent = course.title;
+      modalLevel.textContent = "Level: " + course.level;
+      modalCategory.textContent = "Category: " + course.category;
+      modalDuration.textContent = "Duration: " + course.duration;
     });
-  }, 600);
+
+    cardsContainer.appendChild(card);
+  });
+  // }, 600);
 }
 
 if (closeModal) {
@@ -631,4 +599,62 @@ if (searchInput) {
 
 if (cardsContainer) {
   renderCourses();
+}
+
+const contactForm = document.getElementById("contactForm");
+const formMsg = document.getElementById("formMsg");
+const sendBtn = document.getElementById("sendBtn");
+
+if (contactForm) {
+  contactForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const message = document.getElementById("message").value.trim();
+
+    // validation
+    if (!name || !email || !message) {
+      formMsg.textContent = "Please fill all fields!";
+      formMsg.style.color = "#ef4444";
+      return;
+    }
+
+    //  loading
+    sendBtn.textContent = "Sending...";
+    sendBtn.disabled = true;
+
+    try {
+      const res = await fetch(
+        "https://formsubmit.co/ajax/taraneh.ranjbar@gmail.com",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            message,
+          }),
+        },
+      );
+
+      if (res.ok) {
+        formMsg.textContent = "Message sent successfully ";
+        formMsg.style.color = "#22c55e";
+        contactForm.reset();
+      } else {
+        throw new Error("Error");
+      }
+    } catch (err) {
+      formMsg.textContent = "Something went wrong. Try again.";
+      formMsg.style.color = "#ef4444";
+    }
+
+    // reset button
+    sendBtn.textContent = "Send Message";
+    sendBtn.disabled = false;
+  });
 }
