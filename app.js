@@ -495,6 +495,32 @@ function renderCourses() {
       modalLevel.textContent = "Level: " + course.level;
       modalCategory.textContent = "Category: " + course.category;
       modalDuration.textContent = "Duration: " + course.duration;
+
+      const startBtn = document.getElementById("startBtn");
+      const startMsg = document.getElementById("startMsg");
+
+      const isStarted = localStorage.getItem(`course_${course.id}`);
+
+      if (isStarted) {
+        startBtn.textContent = "Started ✅";
+        startBtn.disabled = true;
+        startMsg.textContent = `${course.title} already started`;
+        startMsg.style.color = "#22c55e";
+      } else {
+        startBtn.textContent = "Start Course";
+        startBtn.disabled = false;
+        startMsg.textContent = "";
+      }
+
+      startBtn.onclick = () => {
+        localStorage.setItem(`course_${course.id}`, "started");
+
+        startMsg.textContent = `${course.title} started!`;
+        startMsg.style.color = "#22c55e";
+
+        startBtn.textContent = "Started ✅";
+        startBtn.disabled = true;
+      };
     });
 
     cardsContainer.appendChild(card);
