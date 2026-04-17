@@ -95,7 +95,7 @@ Solution: Used class-based page switching with JS.
 * Database
 
 ## Live Demo
-https://your-project-link.vercel.app
+https://developer-learning-platform.vercel.app/
 
 ## How to Run
 1. Clone repo
