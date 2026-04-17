@@ -416,8 +416,7 @@ async function loadCourses() {
     console.error("Error loading courses:", error);
 
     if (emptyCourses) {
-      emptyCourses.textContent =
-        "❌ Failed to load courses. Please refresh.";
+      emptyCourses.textContent = "❌ Failed to load courses. Please refresh.";
       emptyCourses.style.display = "block";
     }
   } finally {

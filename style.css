@@ -17,51 +17,6 @@
   }
 }
 
-/* 
-
-
-button {
-  border: none;
-  cursor: pointer;
-}
-
-button:hover {
-  opacity: 0.9;
-  transform: scale(1.03);
-}
-
-button:active {
-  transform: scale(0.95);
-}
-
-h1,
-h2,
-h3 {
-  font-weight: 600;
-}
-/* DARK MODE */
-/* body.dark {
-  --bg: #0b1120;
-  --card: #111827;
-  --text: #e2e8f0;
-  --text-secondary: #94a3b8;
-  --primary: #6366f1;
-  --accent: #22c55e;
-  --border: #1f2937;
-} */
-
-/* LIGHT MODE */
-/* body.light {
-  --bg: #f8fafc;
-  --card: #ffffff;
-  --text: #0f172a;
-  --text-secondary: #64748b;
-  --primary: #4f46e5;
-  --accent: #06b6d4;
-  --border: #e2e8f0;
-
-  background: var(--bg);
-}  */
 :root {
   /* 🎨 Brand */
   --primary: #6366f1;
@@ -95,13 +50,6 @@ body {
 /* =====================
 GLOBAL
 ===================== */
-
-/* body {
-  margin: 0;
-  font-family: "Inter", sans-serif;
-  background: var(--bg);
-  color: var(--text);
-} */
 
 body.light .navbar {
   background: rgba(255, 255, 255, 0.8);
@@ -145,8 +93,6 @@ section {
   padding: 20px;
 }
 
-
-
 @media (max-width: 500px) {
   .weather-widget {
     display: flex;
@@ -163,7 +109,6 @@ section {
     width: 100%;
   }
 }
-
 
 /* =====================
 NAVBAR
@@ -318,7 +263,7 @@ HERO
   transition: all 0.35s ease;
 }
 
-/* ✨ glow layer */
+/* glow layer */
 .primary-btn::before {
   content: "";
   position: absolute;
@@ -411,7 +356,6 @@ DASHBOARD
 }
 
 .progress {
-  /*pointer-events: none;*/
   height: 100%;
   background: linear-gradient(90deg, #6366f1, #22c55e);
   width: 0%;
@@ -916,7 +860,6 @@ section {
   letter-spacing: 0.5px;
 }
 
-
 @media (max-width: 600px) {
   .logo img {
     margin: 5px;
@@ -1262,7 +1205,7 @@ body.light .theme-switch {
   padding: 40px;
   opacity: 0.6;
   font-size: 16px;
-  display: none; 
+  display: none;
 }
 
 .modal {
@@ -1302,7 +1245,6 @@ body.light .theme-switch {
     width: 40%;
   }
 }
-
 
 .close-btn {
   position: absolute;
