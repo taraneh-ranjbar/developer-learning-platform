@@ -406,6 +406,7 @@ let courses = [];
 let courseFilter = "all";
 
 async function loadCourses() {
+  showSkeleton();
   try {
     const response = await fetch("courses.json");
     if (!response.ok) throw new Error("Failed to load courses");
@@ -413,8 +414,14 @@ async function loadCourses() {
     renderCourses();
   } catch (error) {
     console.error("Error loading courses:", error);
-    emptyCourses.textContent =
-      "Failed to load courses. Please refresh the page.";
+
+    if (emptyCourses) {
+      emptyCourses.textContent =
+        "❌ Failed to load courses. Please refresh.";
+      emptyCourses.style.display = "block";
+    }
+  } finally {
+    hideSkeleton();
   }
 }
 const cardsContainer = document.getElementById("cardsContainer");

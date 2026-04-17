@@ -237,9 +237,11 @@ NAVBAR
 .theme-toggle:hover {
   transform: rotate(20deg);
 }
+
 /* =====================
 HERO
 ===================== */
+
 .hero {
   height: 80vh;
   display: flex;
