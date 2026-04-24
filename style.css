@@ -1327,3 +1327,8 @@ body.light .theme-switch {
     padding: 12px;
   }
 }
+
+.input-error {
+  border: 1px solid #ef4444 !important;
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.4);
+}

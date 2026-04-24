@@ -576,6 +576,28 @@ const contactForm = document.getElementById("contactForm");
 const formMsg = document.getElementById("formMsg");
 const sendBtn = document.getElementById("sendBtn");
 
+const nameRegex = /^[A-Za-z][A-Za-z0-9 ]{2,}$/;
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function validateContact(name, email, message) {
+  const errors = {};
+
+  if (!nameRegex.test(name)) {
+    errors.name = "Name must start with a letter and be at least 3 characters";
+  }
+
+  if (!emailRegex.test(email)) {
+    errors.email = "Invalid email format";
+  }
+
+  if (!message.trim()) {
+    errors.message = "Message cannot be empty";
+  }
+
+  return errors;
+}
+
+
 if (contactForm) {
   contactForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -585,11 +607,31 @@ if (contactForm) {
     const message = document.getElementById("message").value.trim();
 
     // validation
-    if (!name || !email || !message) {
-      formMsg.textContent = "Please fill all fields!";
+
+    const errors = validateContact(name, email, message);
+
+    // reset error styles
+    document.getElementById("name").classList.remove("input-error");
+    document.getElementById("email").classList.remove("input-error");
+    document.getElementById("message").classList.remove("input-error");
+
+    if (Object.keys(errors).length > 0) {
       formMsg.style.color = "#ef4444";
+      formMsg.textContent = Object.values(errors)[0];
+
+      if (errors.name) {
+        document.getElementById("name").classList.add("input-error");
+      }
+      if (errors.email) {
+        document.getElementById("email").classList.add("input-error");
+      }
+      if (errors.message) {
+        document.getElementById("message").classList.add("input-error");
+      }
+
       return;
     }
+
 
     //  loading
     sendBtn.textContent = "Sending...";
